@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="de-AT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Xylem Watermark – Nachhaltiges Frühstück</title>
+  <style>
+    :root {
+      --xylem-blue: #0077b6;
+      --xylem-blue-dark: #005f91;
+      --xylem-blue-light: #eaf6fb;
+      --xylem-navy: #16324f;
+      --xylem-green: #2a9d8f;
+      --xylem-green-light: #dff5e6;
+      --xylem-warning-bg: #ffe3e3;
+      --xylem-warning-text: #8a1c1c;
+      --xylem-good-bg: #fff7dc;
+      --xylem-good-text: #7c5b00;
+      --xylem-excellent-bg: #dff7e8;
+      --xylem-excellent-text: #14532d;
+      --xylem-white: #ffffff;
+      --xylem-text-soft: #536575;
+      --xylem-border: #cfe5f1;
+      --shadow-soft: 0 8px 24px rgba(22, 50, 79, 0.08);
+      --radius-lg: 20px;
+      --radius-md: 16px;
+      --radius-pill: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f4fbfe, #f8fcfa);
+      color: var(--xylem-navy);
+      min-height: 100vh;
+      padding: 12px;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 16px;
+      padding: 20px 16px;
+      background: var(--xylem-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      border-top: 6px solid var(--xylem-blue);
+    }
+
+    .logo-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    .logo {
+      display: block;
+      width: 100%;
+      max-width: 420px;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .header p {
+      font-size: 0.98rem;
+      color: var(--xylem-text-soft);
+      line-height: 1.5;
+    }
+
+    .panel {
+      background: var(--xylem-white);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 16px;
+    }
+
+    .panel h2 {
+      margin-bottom: 10px;
+      color: var(--xylem-blue);
+      font-size: 1.2rem;
+    }
+
+    .panel-intro {
+      color: var(--xylem-text-soft);
+      font-size: 0.92rem;
+      margin-bottom: 14px;
+      line-height: 1.45;
+    }
+
+    .selected-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding: 10px 12px;
+      background: #f3f9fc;
+      border: 1px solid #d9ebf3;
+      border-radius: 14px;
+      position: sticky;
+      top: 8px;
+      z-index: 5;
+    }
+
+    .selected-summary-text {
+      font-size: 0.92rem;
+      color: var(--xylem-navy);
+      font-weight: bold;
+    }
+
+    .foods {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .food-card {
+      border: 2px solid var(--xylem-border);
+      border-radius: 14px;
+      padding: 12px;
+      cursor: pointer;
+      transition: 0.2s ease;
+      background: #fbfdff;
+      min-height: 92px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .food-card:hover {
+      border-color: #7bc6ea;
+      box-shadow: 0 5px 12px rgba(22, 50, 79, 0.08);
+    }
+
+    .food-card.selected {
+      background: var(--xylem-green-light);
+      border-color: var(--xylem-green);
+    }
+
+    .food-name {
+      font-size: 0.96rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: var(--xylem-navy);
+      line-height: 1.25;
+    }
+
+    .food-detail {
+      font-size: 0.8rem;
+      margin-bottom: 3px;
+      color: var(--xylem-text-soft);
+      line-height: 1.25;
+    }
+
+    .plate {
+      min-height: 120px;
+      border: 2px dashed #9ccde5;
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      background: #f9fdff;
+    }
+
+    .plate p {
+      color: var(--xylem-text-soft);
+      line-height: 1.45;
+    }
+
+    .plate-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .plate-item {
+      background: #e6f4fb;
+      border-radius: var(--radius-pill);
+      padding: 8px 12px;
+      font-size: 0.86rem;
+      color: var(--xylem-navy);
+      border: 1px solid #d3eaf5;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      border-radius: var(--radius-pill);
+      padding: 12px 18px;
+      font-size: 0.98rem;
+      cursor: pointer;
+      transition: 0.2s ease;
+      font-weight: bold;
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .primary {
+      background: var(--xylem-blue);
+      color: white;
+    }
+
+    .primary:hover {
+      background: var(--xylem-blue-dark);
+    }
+
+    .secondary {
+      background: #edf6ff;
+      color: var(--xylem-blue);
+    }
+
+    .secondary:hover {
+      background: #d8efff;
+    }
+
+    .result {
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: var(--radius-md);
+      display: none;
+      line-height: 1.5;
+    }
+
+    .excellent {
+      background: var(--xylem-excellent-bg);
+      color: var(--xylem-excellent-text);
+    }
+
+    .good {
+      background: var(--xylem-good-bg);
+      color: var(--xylem-good-text);
+    }
+
+    .warning {
+      background: var(--xylem-warning-bg);
+      color: var(--xylem-warning-text);
+    }
+
+    .footer {
+      margin-top: 20px;
+      text-align: center;
+      color: #5c6d79;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      padding-bottom: 8px;
+    }
+
+    .footer a {
+      color: var(--xylem-blue);
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .footer a:hover,
+    .footer a:focus {
+      text-decoration: underline;
+    }
+
+    @media (min-width: 700px) {
+      .foods {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 420px) {
+      .foods {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .food-name {
+        font-size: 0.92rem;
+      }
+
+      .food-detail {
+        font-size: 0.78rem;
+      }
+
+      .logo {
+        max-width: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo-wrap">
+        <img
+          src="XYL_Watermark HORZ rgb.png"
+          alt="Xylem Watermark"
+          class="logo"
+        />
+      </div>
+      <p>
+        Dein Frühstück wird jetzt bestimmt gesund, aber möchtest du auch wissen, ob es nachhaltig wird?
+        Wähle die Lebensmittel deines gewünschten Frühstücks aus und finde es mit diesem Spiel heraus!
+      </p>
+    </div>
+
+    <div class="panel">
+      <h2>Wähle dein Frühstück</h2>
+      <p class="panel-intro">
+        Tippe auf die Produkte, die du für dein Frühstück auswählen möchtest. Danach kannst du dein Ergebnis berechnen.
+      </p>
+
+      <div class="selected-summary">
+        <div class="selected-summary-text" id="selectedCount">Ausgewählt: 0 Produkte</div>
+      </div>
+
+      <div class="foods" id="foodsContainer"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Dein Frühstücksteller</h2>
+
+      <div class="plate">
+        <p>Wähle Produkte aus, um dein Frühstück zusammenzustellen.</p>
+        <div class="plate-items" id="plateItems"></div>
+      </div>
+
+      <div class="buttons">
+        <button class="primary" onclick="calculateResult()">Mein Ergebnis berechnen</button>
+        <button class="secondary" onclick="resetGame()">Zurücksetzen</button>
+      </div>
+
+      <div class="result" id="resultBox"></div>
+    </div>
+
+    <div class="footer">
+      Danke, dass du nachhaltige Aktivitäten unterstützt!
+      <a href="https://mywatermark.benevity.org/de/volunteer/12157/" target="_blank" rel="noopener noreferrer">
+        Klicke jetzt hier
+      </a>,
+      um eine Watermark-Stunde für dich zu tracken.
+    </div>
+  </div>
+
+  <script>
+    const foods = [
+      { name: 'Joghurt', water: 180, nutrition: 8, sustainability: 6, emoji: '🥛' },
+      { name: 'Honig', water: 55, nutrition: 5, sustainability: 7, emoji: '🍯' },
+      { name: 'Vollkorngebäck', water: 75, nutrition: 8, sustainability: 8, emoji: '🥐' },
+      { name: 'Müsli', water: 80, nutrition: 8, sustainability: 8, emoji: '🥣' },
+      { name: 'Haferflocken', water: 50, nutrition: 9, sustainability: 10, emoji: '🥣' },
+      { name: 'Nüsse', water: 140, nutrition: 8, sustainability: 6, emoji: '🥜' },
+      { name: 'Käse', water: 240, nutrition: 8, sustainability: 5, emoji: '🧀' },
+      { name: 'Gurke', water: 30, nutrition: 6, sustainability: 8, emoji: '🥒' },
+      { name: 'roter Paprika', water: 45, nutrition: 8, sustainability: 7, emoji: '🌶️' },
+      { name: 'Karotten', water: 25, nutrition: 8, sustainability: 9, emoji: '🥕' },
+      { name: 'Avocado', water: 320, nutrition: 8, sustainability: 4, emoji: '🥑' },
+      { name: 'gekochte Eier', water: 200, nutrition: 9, sustainability: 5, emoji: '🥚' },
+      { name: 'Frischkäse', water: 210, nutrition: 7, sustainability: 5, emoji: '🧀' },
+      { name: 'Hüttenkäse', water: 170, nutrition: 9, sustainability: 6, emoji: '🥣' },
+      { name: 'Humus', water: 70, nutrition: 8, sustainability: 8, emoji: '🍽️' },
+      { name: 'Schnittlauch', water: 10, nutrition: 5, sustainability: 9, emoji: '🌿' },
+      { name: 'Butter', water: 160, nutrition: 4, sustainability: 4, emoji: '🧈' },
+      { name: 'Äpfel', water: 70, nutrition: 8, sustainability: 9, emoji: '🍎' },
+      { name: 'Erdbeern', water: 60, nutrition: 8, sustainability: 8, emoji: '🍓' },
+      { name: 'Heidelbeern', water: 65, nutrition: 9, sustainability: 7, emoji: '🫐' },
+      { name: 'Wassermelone', water: 85, nutrition: 7, sustainability: 7, emoji: '🍉' },
+      { name: 'Zimtstreuer', water: 5, nutrition: 3, sustainability: 8, emoji: '✨' },
+      { name: 'Milch (laktosefrei)', water: 150, nutrition: 7, sustainability: 6, emoji: '🥛' },
+      { name: 'Hafermilch', water: 60, nutrition: 6, sustainability: 8, emoji: '🥛' },
+      { name: 'Kresse', water: 10, nutrition: 6, sustainability: 9, emoji: '🌱' },
+      { name: 'Zitrone', water: 30, nutrition: 6, sustainability: 7, emoji: '🍋' },
+      { name: 'Minze', water: 8, nutrition: 4, sustainability: 9, emoji: '🌿' },
+      { name: 'Orange', water: 80, nutrition: 7, sustainability: 6, emoji: '🍊' },
+      { name: 'Karottensaft', water: 40, nutrition: 7, sustainability: 8, emoji: '🧃' },
+      { name: 'rote Rübensaft', water: 45, nutrition: 8, sustainability: 8, emoji: '🧃' }
+    ];
+
+    let selectedFoods = [];
+
+    const foodsContainer = document.getElementById('foodsContainer');
+    const plateItems = document.getElementById('plateItems');
+    const selectedCount = document.getElementById('selectedCount');
+
+    function renderFoods() {
+      foodsContainer.innerHTML = '';
+
+      for (let index = 0; index < foods.length; index++) {
+        const food = foods[index];
+        const card = document.createElement('div');
+        card.className = 'food-card';
+
+        card.innerHTML = `
+          <div class="food-name">${food.emoji} ${food.name}</div>
+          <div class="food-detail">💧 Wasser: ${food.water} L</div>
+          <div class="food-detail">🥗 Ernährung: ${food.nutrition}/10</div>
+          <div class="food-detail">🌱 Nachhaltigkeit: ${food.sustainability}/10</div>
+        `;
+
+        card.addEventListener('click', function () {
+          toggleFood(index, card);
+        });
+
+        foodsContainer.appendChild(card);
+      }
+    }
+
+    function toggleFood(index, card) {
+      const foodName = foods[index].name;
+      const existing = selectedFoods.find(item => item.name === foodName);
+
+      if (existing) {
+        selectedFoods = selectedFoods.filter(item => item.name !== foodName);
+        card.classList.remove('selected');
+      } else {
+        selectedFoods.push(foods[index]);
+        card.classList.add('selected');
+      }
+
+      updatePlate();
+      updateSelectedCount();
+    }
+
+    function updateSelectedCount() {
+      selectedCount.textContent = 'Ausgewählt: ' + selectedFoods.length + ' Produkte';
+    }
+
+    function updatePlate() {
+      plateItems.innerHTML = '';
+
+      for (let i = 0; i < selectedFoods.length; i++) {
+        const food = selectedFoods[i];
+        const item = document.createElement('div');
+        item.className = 'plate-item';
+        item.textContent = food.emoji + ' ' + food.name;
+        plateItems.appendChild(item);
+      }
+    }
+
+    function calculateResult() {
+      const resultBox = document.getElementById('resultBox');
+
+      if (selectedFoods.length === 0) {
+        resultBox.style.display = 'block';
+        resultBox.className = 'result warning';
+        resultBox.innerHTML = 'Bitte wähle zuerst einige Frühstücksprodukte aus.';
+        return;
+      }
+
+      let totalWater = 0;
+      let nutrition = 0;
+      let sustainability = 0;
+
+      for (let i = 0; i < selectedFoods.length; i++) {
+        totalWater += selectedFoods[i].water;
+        nutrition += selectedFoods[i].nutrition;
+        sustainability += selectedFoods[i].sustainability;
+      }
+
+      let title = '';
+      let message = '';
+      let className = '';
+
+      if (totalWater <= 450 && sustainability >= 30) {
+        title = '🌍 Watermark-Champion';
+        message = 'Sehr starke Auswahl! Dein Frühstück ist ausgewogen und hat einen niedrigen Wasserfußabdruck.';
+        className = 'result excellent';
+      } else if (totalWater <= 800) {
+        title = '💧 Nachhaltiger Start';
+        message = 'Gute Balance! Du hast mehrere wasserbewusste Entscheidungen getroffen.';
+        className = 'result good';
+      } else {
+        title = '⚠ Hoher Wasserfußabdruck';
+        message = 'Dieses Frühstück benötigt vergleichsweise viele Wasserressourcen. Probiere nachhaltigere Alternativen aus.';
+        className = 'result warning';
+      }
+
+      resultBox.style.display = 'block';
+      resultBox.className = className;
+      resultBox.innerHTML = `
+        <h3 style="margin-bottom:10px;">${title}</h3>
+        <p style="margin-bottom:10px;">${message}</p>
+        <p><strong>Gesamter Wasserfußabdruck:</strong> ${totalWater} Liter</p>
+        <p><strong>Ernährungs-Score:</strong> ${nutrition}</p>
+        <p><strong>Nachhaltigkeits-Score:</strong> ${sustainability}</p>
+        <br>
+        <p><strong>Schon gewusst?</strong> Schon kleine Alltagsentscheidungen können helfen, Wasser zu sparen und nachhaltigere Gemeinschaften zu fördern.</p>
+      `;
+    }
+
+    function resetGame() {
+      selectedFoods = [];
+      updatePlate();
+      updateSelectedCount();
+
+      const cards = document.querySelectorAll('.food-card');
+      cards.forEach(card => card.classList.remove('selected'));
+
+      const resultBox = document.getElementById('resultBox');
+      resultBox.style.display = 'none';
+      resultBox.innerHTML = '';
+    }
+
+    renderFoods();
+    updateSelectedCount();
+  </script>
+</body>
+</html>
